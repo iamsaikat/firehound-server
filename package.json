@@ -1,0 +1,20 @@
+{
+  "name": "firehound-server",
+  "version": "1.0.0",
+  "description": "Sever for Firehound website",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "npm install forever -g && forever stopall && forever --minUptime 1000 --spinSleepTime 1000 server.js"
+  },
+  "author": "Saikat Halder (iamsaikat)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "file-system": "^2.2.2",
+    "jsdom": "^11.11.0",
+    "request": "^2.87.0"
+  }
+}
