@@ -4,8 +4,8 @@
   "description": "Sever for Firehound website",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon server.js",
-    "start": "npm install forever -g && forever stopall && forever --minUptime 1000 --spinSleepTime 1000 server.js"
+    "start": "nodemon server.js",
+    "start-prod": "npm install -g forever && forever stopall && forever --minUptime 1000 --spinSleepTime 1000 server.js"
   },
   "author": "Saikat Halder (iamsaikat)",
   "license": "ISC",
