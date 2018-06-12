@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 
 const devicesRoutes = require('./app/routes/devices-routes');
 const downloadRoutes = require('./app/routes/download-routes');
+const gdriveRoutes = require('./app/routes/gdrive-routes');
 
 app.use(cors());
 app.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -22,10 +23,13 @@ app.get("/", function (req, res) {
 })
 
 //Devices Routes...
-app.use('/api', devicesRoutes())
+app.use('/api', devicesRoutes());
 
 //Download Routes...
-app.use('/api', downloadRoutes())
+app.use('/api', downloadRoutes());
+
+//Get gdrive files Routes...
+app.use('/api', gdriveRoutes());
 
 app.listen(port, () => {
   console.log(`Api running on http://localhost:${port}/api`);
