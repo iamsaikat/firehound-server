@@ -4,6 +4,7 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 var path = require("path");
+var _ = require('lodash');
 
 // If modifying these scopes, delete credentials.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
@@ -77,10 +78,31 @@ module.exports = () => {
           fields: 'nextPageToken, files(id, name, size)',
         }, (err, {data}) => {
           if (err) return console.log('The API returned an error: ' + err);
-          const files = data.files;
+          var files = data.files;
           if (files.length) {
-            console.log('Files:',files);
-            res.send(files);
+            files.forEach(e => {
+              var title = e.name.split("-").pop();
+              const codename = title.split(".")[0];
+              e.codename = codename;
+            });
+
+            const result = _(files)
+            .groupBy('codename') // group the items
+            .map((group, codename) => ({ // map the groups to new objects
+              codename,
+              files: group.map(({ id, name, size }) => ({ // extract the dates from the groups
+                id,
+                name, 
+                size
+              }))
+            }))
+            .value();
+
+            // res.send(result);
+            res.json({
+              message: "Retrieved Devices",
+              devices: result
+            })
           } else {
             console.log('No files found.');
           }
