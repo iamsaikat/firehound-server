@@ -6,6 +6,10 @@ const {google} = require('googleapis');
 var path = require("path");
 var _ = require('lodash');
 
+var {mongoose} = require('../config/db');
+var {Device} = require('../models/device');
+
+
 // If modifying these scopes, delete credentials.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 const TOKEN_PATH = 'credentials.json';
@@ -84,25 +88,43 @@ module.exports = () => {
               var title = e.name.split("-").pop();
               const codename = title.split(".")[0];
               e.codename = codename;
+              // Add files in MongoDB
+              var device = new Device(e);
+
+              Device.find({ id: e.id}).then((result) => {
+                if (!result) {
+                  device.save().then((doc) => {
+                    console.log(doc);
+                  }, (e) => {
+                    res.status(400).send(e);
+                  });
+                }
+              });
             });
 
-            const result = _(files)
-            .groupBy('codename') // group the items
-            .map((group, codename) => ({ // map the groups to new objects
-              codename,
-              files: group.map(({ id, name, size }) => ({ // extract the dates from the groups
-                id,
-                name, 
-                size
+            Device.find().then((result) => {
+              // res.send(result);
+              const data = _(result)
+              .groupBy('codename') // group the items
+              .map((group, codename) => ({ // map the groups to new objects
+                codename,
+                files: group.map(({ id, name, size, download }) => ({ // extract the dates from the groups
+                  id,
+                  name, 
+                  size,
+                  download
+                }))
               }))
-            }))
-            .value();
+              .value();
 
-            // res.send(result);
-            res.json({
-              message: "Retrieved Devices",
-              devices: result
-            })
+              res.json({
+                message: "Retrieved Devices",
+                devices: data
+              });
+
+            }).catch((e) => {
+              res.status(400).send();
+            });
           } else {
             console.log('No files found.');
           }
