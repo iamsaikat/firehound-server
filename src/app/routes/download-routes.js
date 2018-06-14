@@ -6,6 +6,9 @@ const {
   JSDOM
 } = jsdom;
 
+var {mongoose} = require('../config/db');
+var {Device} = require('../models/device');
+
 module.exports = () => {
   router.use(function (req, res, next) {
     next();
@@ -20,6 +23,7 @@ module.exports = () => {
       var exportURL = "";
       if (req.body.id) {
         exportURL = "https://drive.google.com/uc?export=download&id=" + req.body.id;
+        Device.update({ id: req.body.id }, { $inc : { download : 1 }}).exec();
       } else {
         exportURL = req.body.link;
       }
