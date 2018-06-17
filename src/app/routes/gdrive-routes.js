@@ -92,7 +92,7 @@ module.exports = () => {
               var device = new Device(e);
 
               Device.find({ id: e.id}).then((result) => {
-                if (!result) {
+                if (!result[0]) {
                   device.save().then((doc) => {
                     console.log(doc);
                   }, (e) => {
@@ -117,10 +117,7 @@ module.exports = () => {
               }))
               .value();
 
-              res.json({
-                message: "Retrieved Devices",
-                devices: data
-              });
+              res.status(200).send("Successfully synced with gdrive files");
 
             }).catch((e) => {
               res.status(400).send();
