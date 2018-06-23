@@ -170,13 +170,13 @@ module.exports = () => {
 
           Device.remove({
             id: req.params.file_id
-          }, function (err, user) {
+          }, function (err, response) {
             if (err) {
               res.send(err)
             } else {
               res.status(200).json({
                 message: `Successfully delete gdrive file id : ${req.params.file_id}`,
-                data: data
+                data: response
               })
             }
           })
