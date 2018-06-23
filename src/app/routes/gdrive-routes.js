@@ -6,7 +6,7 @@ const {google} = require('googleapis');
 var path = require("path");
 var _ = require('lodash');
 
-var {mongoose} = require('../config/db');
+var {mongoose} = require('../libs/db');
 var {Device} = require('../models/device');
 
 

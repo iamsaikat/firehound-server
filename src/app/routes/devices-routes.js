@@ -2,7 +2,7 @@ const app = require('express');
 const router = app.Router();
 var _ = require('lodash');
 
-var {mongoose} = require('../config/db');
+var {mongoose} = require('../libs/db');
 var {Device} = require('../models/device');
 
 module.exports = () => {

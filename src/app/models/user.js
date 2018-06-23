@@ -1,24 +1,50 @@
-var mongoose = require('mongoose');
-var UserSchema = new mongoose.Schema({
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
+var bcrypt = require('bcrypt')
+const SALT_WORK_FACTOR = 10
+
+var UserSchema = new Schema({
+  id:{
+    type: Number,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: String,
   email: {
     type: String,
-    unique: true, // no two users can create two same emails
     required: true,
-    trim: true // removes whitespace accidentally
-  },
-  name: {
-    type: String,
-    unique: false,
-    required: true,
-    trim: true
+    index: { 
+      unique: true 
+    } 
   },
   password: {
     type: String,
-    required: true,
-    trim: false
+    required: true
+  },
+  role: {
+    type: String,
+    enum: ['editor', 'admin'],
+    default: 'editor'
   }
-});
+}, {
+  timestamps: true
+})
 
-var User = mongoose.model("User", UserSchema);
+UserSchema.pre('save', function(next) {
+  var user = this
+  if (!user.isModified('password')) return next()
 
-module.exports = {User};
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if (err) return next(err)
+
+    //hash the password along with our new salt
+    bcrypt.hash(user.password, salt, function(err, hash) {
+        if (err) return next(err)
+
+        user.password = hash
+        next()
+    })
+  })
+})
+
+module.exports = mongoose.model("User", UserSchema);

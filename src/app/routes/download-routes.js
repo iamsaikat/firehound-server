@@ -6,7 +6,7 @@ const {
   JSDOM
 } = jsdom;
 
-var {mongoose} = require('../config/db');
+var {mongoose} = require('../libs/db');
 var {Device} = require('../models/device');
 
 module.exports = () => {

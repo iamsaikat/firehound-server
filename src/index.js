@@ -10,7 +10,7 @@ const devicesRoutes = require('./app/routes/devices-routes');
 const downloadRoutes = require('./app/routes/download-routes');
 const gdriveRoutes = require('./app/routes/gdrive-routes');
 const userRoutes = require('./app/routes/user-routes');
-const loginRoutes = require('./app/routes/login-routes');
+const AuthRoutes = require('./app/routes/auth-routes');
 
 app.use(cors());
 app.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -34,7 +34,7 @@ app.use('/api', downloadRoutes());
 app.use('/api', userRoutes());
 
 //Login Routes...
-app.use('/api', loginRoutes());
+app.use('/api', AuthRoutes());
 
 //Get gdrive files Routes...
 app.use('/api', gdriveRoutes());
