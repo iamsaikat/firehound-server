@@ -34,12 +34,18 @@ module.exports = () => {
               'message': 'Token created!'
             })
           } else {
-            res.sendStatus(401)
+            res.status(401).json({
+              'message': 'Check Your Credentials!'
+            })
           }
         })
-        .catch(error => res.sendStatus(401))
+        .catch(error => res.status(401).json({
+          'message': error
+        }))
     } else {
-      res.sendStatus(401)
+      res.status(401).json({
+        'message': 'Check Your Credentials!'
+      })
     }
   })
 

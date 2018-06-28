@@ -145,6 +145,20 @@ module.exports = () => {
   router.route('/gdrive-files/:file_id')
     .all(auth.authenticate())
     .delete(function (req, res) {
+
+      Device.remove({
+        id: req.params.file_id
+      }, function (err, response) {
+        if (err) {
+          res.send(err)
+        } else {
+          res.status(200).json({
+            message: `Successfully delete gdrive file id : ${req.params.file_id}`,
+            data: response
+          })
+        }
+      })
+      
       /**
        * Permanently delete a file, skipping the trash.
        *
@@ -167,19 +181,6 @@ module.exports = () => {
             res.status(400).send('The API returned an error: ' + err)
             return
           }
-
-          Device.remove({
-            id: req.params.file_id
-          }, function (err, response) {
-            if (err) {
-              res.send(err)
-            } else {
-              res.status(200).json({
-                message: `Successfully delete gdrive file id : ${req.params.file_id}`,
-                data: response
-              })
-            }
-          })
         })
       }
 
