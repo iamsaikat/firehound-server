@@ -10,6 +10,10 @@ var Device = mongoose.model('Device', {
     type: String,
     required: true
   },
+  date: { 
+    type: String, 
+    default: new Date().toISOString() 
+  },
   size: {
     type: Number,
     default: 0

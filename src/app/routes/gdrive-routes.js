@@ -93,7 +93,7 @@ module.exports = () => {
         });
         drive.files.list({
           'q': "'1UugE3Eb43arYnfn0muFvIkkDkbvj3NAr' in parents",
-          fields: 'nextPageToken, files(id, name, size)',
+          fields: 'nextPageToken, files(id, name, size, modifiedTime)',
         }, (err, {
           data
         }) => {
@@ -103,7 +103,8 @@ module.exports = () => {
             files.forEach(e => {
               var title = e.name.split("-").pop()
               const codename = title.split(".")[0]
-              e.codename = codename;
+              e.codename = codename
+              e.date = e.modifiedTime
               // Add files in MongoDB
               var device = new Device(e)
 

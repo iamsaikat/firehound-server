@@ -18,8 +18,10 @@ module.exports = () => {
         .groupBy('codename') // group the items
         .map((group, codename) => ({ // map the groups to new objects
           codename,
-          files: group.map(({ id, name, size, download }) => ({ // extract the dates from the groups
+          files: _.orderBy(group, 'date', 'desc')
+          .map(({ id, date, name, size, download }) => ({ // extract the dates from the groups
             id,
+            date,
             name, 
             size,
             download
